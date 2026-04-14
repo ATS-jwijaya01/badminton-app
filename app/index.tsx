@@ -1,8 +1,8 @@
 import { OutlineButton, PrimaryButton } from '@/components/auth/auth-buttons';
 import { authColors } from '@/constants/auth-theme';
 import { commonStyles } from '@/constants/common-styles';
-import { useAuth } from '@/contexts/AuthContext';
 import { fontFamily } from '@/constants/typography';
+import { useAuth } from '@/contexts/AuthContext';
 import { Redirect, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';

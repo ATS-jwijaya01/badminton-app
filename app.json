@@ -5,11 +5,15 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "badmintonapp",
+    "scheme": [
+      "badmintonapp",
+      "com.googleusercontent.apps.441529572113-6edb0sa751vcu6itk8enq2mv9hb2i1au"
+    ],
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.joshuanatan.badmintonapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -39,11 +43,18 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "60dfccb4-6e95-471f-8d3e-022687735a46"
+      }
     }
   }
 }

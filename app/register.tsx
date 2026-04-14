@@ -6,6 +6,7 @@ import { commonStyles } from '@/constants/common-styles';
 import { useAuth } from '@/contexts/AuthContext';
 import { fontFamily } from '@/constants/typography';
 import { Ionicons } from '@expo/vector-icons';
+import { makeRedirectUri } from 'expo-auth-session';
 import * as Google from 'expo-auth-session/providers/google';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -25,6 +26,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 WebBrowser.maybeCompleteAuthSession();
 
+function getGoogleNativeScheme(clientId?: string): string | undefined {
+  if (!clientId) {
+    return undefined;
+  }
+  const suffix = '.apps.googleusercontent.com';
+  if (!clientId.endsWith(suffix)) {
+    return undefined;
+  }
+  const prefix = clientId.slice(0, -suffix.length);
+  return `com.googleusercontent.apps.${prefix}`;
+}
+
 export default function RegisterScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -36,10 +49,18 @@ export default function RegisterScreen() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const androidClientId = process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID;
+  const googleRedirectScheme =
+    process.env.EXPO_PUBLIC_GOOGLE_REDIRECT_SCHEME || getGoogleNativeScheme(androidClientId);
+  const redirectUri = makeRedirectUri({
+    native: googleRedirectScheme ? `${googleRedirectScheme}:/oauthredirect` : undefined,
+    scheme: googleRedirectScheme,
+  });
   const [googleRequest, googleResponse, promptAsync] = Google.useIdTokenAuthRequest({
     webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
-    androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+    androidClientId,
     iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+    redirectUri,
     selectAccount: true,
   });
 
